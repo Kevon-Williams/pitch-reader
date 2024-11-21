@@ -1,5 +1,5 @@
 import pyaudio
-from ..core.config import AudioConfig
+from pitch_reader.core.config import AudioConfig
 
 class Audio:
     def __init__(self):
@@ -24,4 +24,4 @@ class Audio:
             self.stream.stop_stream()
             self.stream.close()
         self.audio.terminate()
-        
+
