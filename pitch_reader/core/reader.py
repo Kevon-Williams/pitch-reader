@@ -6,12 +6,13 @@ from mss.windows import MSS as mss
 from pitch_reader.services.audio import Audio
 from pitch_reader.services.ocr import Ocr
 from pitch_reader.core.config import ScreenConfig
+from pitch_reader.core.generate_text import Commentary
 
 class ScreenReader:
     def __init__(self, api_key, screen_config=None, buffer_size=5):
         self.screen_config = ScreenConfig()
         self.previous_texts = deque(maxlen=buffer_size)
-
+        self.commentary = Commentary(api_key)
         self.audio_service = Audio(api_key)
         self.ocr = Ocr()
 
@@ -20,9 +21,12 @@ class ScreenReader:
             return
 
         self.previous_texts.append(text)
-        print(f"Processing: {text}")
+        new_commentary = self.commentary.generate_commentary(text)
 
-        self.audio_service.start_audio_stream(text)
+        print(f"Processing: {new_commentary}")
+
+
+        self.audio_service.start_audio_stream(new_commentary)
 
     def take_screenshot_and_process(self, duration):
         start_time = time.time()

@@ -10,6 +10,8 @@ def main(duration):
     reader = ScreenReader(api_key)
     reader.take_screenshot_and_process(duration)
 
+    
+
 
 if __name__ == "__main__":
     main(10)
