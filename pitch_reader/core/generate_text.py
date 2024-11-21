@@ -12,7 +12,7 @@ class Commentary:
                 {"role": "system", "content": "I want you to act as a football commentator. I will give you descriptions of football matches in progress and you will commentate on the match. You should be knowledgeable of football terminology, tactics and focus primarily on providing intelligent commentary and narrating play-by-play. "},
                 {"role": "user", "content": previous_texts}
             ],
-            max_tokens=50
+            max_tokens=20
         )
 
-        return response.choice[0].message
+        return response.choices[0].message.content
