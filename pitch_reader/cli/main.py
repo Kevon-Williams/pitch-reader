@@ -15,7 +15,5 @@ def main(duration):
     reader.close_audio_stream()
 
 
-
-
 if __name__ == "__main__":
     main(300)
