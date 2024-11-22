@@ -9,10 +9,17 @@ class Commentary:
         response = self.openai.chat.completions.create(
             model="gpt-4o-mini-2024-07-18",
             messages=[
-                {"role": "system", "content": "Act as a concise football commentator. Comment intelligently with a focus on play-by-play and tactics. Max 70 characters."},
+                {"role": "system", "content": """ Act as a concise football commentator. Focus on:
+                    - Tactical insights
+                    - Play-by-play action
+                    - Player movements and decisions
+                    Keep commentary under 50 characters.
+                    Make it flow naturally with previous comments."""},
                 {"role": "user", "content": previous_texts}
             ],
-            max_tokens=20
+            max_tokens=15,
+            temperature=0.7,
+            presence_penalty=0.3
         )
 
         return response.choices[0].message.content

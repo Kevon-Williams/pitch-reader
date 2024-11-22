@@ -9,7 +9,7 @@ from pitch_reader.core.config import ScreenConfig
 from pitch_reader.core.generate_text import Commentary
 
 class ScreenReader:
-    def __init__(self, api_key, screen_config=None, buffer_size=5):
+    def __init__(self, api_key, screen_config=None, buffer_size=1):
         self.screen_config = ScreenConfig()
         self.previous_texts = deque(maxlen=buffer_size)
         self.commentary = Commentary(api_key)
@@ -37,7 +37,7 @@ class ScreenReader:
                 img_array = np.array(screenshot)
                 text = self.ocr.process_image(img_array)
                 self.process_text(text)
-                time.sleep(1.5)
+                time.sleep(2)
 
 
     def close_audio_stream(self):
