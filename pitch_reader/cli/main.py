@@ -9,6 +9,7 @@ def main(duration):
 
     reader = ScreenReader(api_key)
     reader.take_screenshot_and_process(duration)
+    reader.close_audio_stream()
 
 
 
