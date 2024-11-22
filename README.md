@@ -1,6 +1,6 @@
 # Pitch Reader
 
-A real-time football commentary system that transforms on-screen text into natural speech using OCR technology and artificial intelligence. Captures screen content, processing it through OCR, generating context-aware commentary, and delivering it through high-quality text-to-speech conversion, emualating the style of Martin Tyler.
+A real-time football commentary system that transforms on-screen text into natural speech using OCR technology and artificial intelligence. Captures screen content, processing it through OCR, generating context-aware commentary, and delivering it through high-quality text-to-speech conversion, emulating the style of Martin Tyler.
 
 ## Core Functionality
 - **Real-time Screen Capture**: Continuous monitoring of specified screen regions
