@@ -37,6 +37,7 @@ class ScreenReader:
                 img_array = np.array(screenshot)
                 text = self.ocr.process_image(img_array)
                 self.process_text(text)
+                time.sleep(1.5)
 
 
     def close_audio_stream(self):
