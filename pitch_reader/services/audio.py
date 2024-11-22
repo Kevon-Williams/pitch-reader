@@ -3,6 +3,9 @@ from openai import OpenAI
 from pitch_reader.core.config import AudioConfig
 
 class Audio:
+    """
+    Audio class to play audio from text
+    """
     def __init__(self, api_key):
         self.config = AudioConfig()
         self.openai = OpenAI(api_key=api_key)
@@ -10,6 +13,11 @@ class Audio:
         self.stream = None
 
     def start_audio_stream(self, text):
+        """
+        Starts the audio stream (plays the audio)
+        :param text:
+        :return:
+        """
         self.stream = self.audio.open(
             format=self.config.format,
             channels=self.config.channels,
@@ -29,6 +37,10 @@ class Audio:
 
 
     def stop_audio(self):
+        """
+        Stops the audio stream (stops audio)
+        :return:
+        """
         if self.stream:
             self.stream.stop_stream()
             self.stream.close()

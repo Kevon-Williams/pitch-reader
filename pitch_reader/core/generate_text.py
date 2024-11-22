@@ -1,11 +1,18 @@
 from openai import OpenAI
 
 class Commentary:
+    """
+    Commentary class to generate commentary
+    """
     def __init__(self, api_key):
         self.openai = OpenAI(api_key=api_key)
 
     def generate_commentary(self, previous_texts):
-
+        """
+        Generates commentary based on previous texts (context)
+        :param previous_texts:
+        :return :
+        """
         response = self.openai.chat.completions.create(
             model="gpt-4o-mini-2024-07-18",
             messages=[
