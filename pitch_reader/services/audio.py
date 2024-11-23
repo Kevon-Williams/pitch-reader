@@ -27,7 +27,7 @@ class Audio:
 
         with self.openai.audio.speech.with_streaming_response.create(
                 model="tts-1",
-                voice="echo",
+                voice="alloy",
                 input=text,
                 response_format="pcm"
         ) as response:
