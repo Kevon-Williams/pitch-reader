@@ -13,10 +13,10 @@ class Commentary:
     def __init__(self):
         self.openai = OpenAI(api_key=api_key)
 
-    def generate_commentary(self, previous_texts):
+    def generate_commentary(self, text):
         """
-        Generates commentary based on previous texts (context)
-        :param previous_texts:
+        Generates commentary based on previous text (context)
+        :param text:
         :return :
         """
         response = self.openai.chat.completions.create(
@@ -41,7 +41,7 @@ class Commentary:
                     "The player passes the ball"
                     "A shot has been taken"
                     "The team is attacking"""},
-                {"role": "user", "content": previous_texts}
+                {"role": "user", "content": text}
             ],
             max_tokens=20,
             temperature=0.5
