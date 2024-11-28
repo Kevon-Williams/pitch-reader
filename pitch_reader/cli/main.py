@@ -1,14 +1,22 @@
 from pitch_reader.core.reader import ScreenReader
 
-def main(duration):
+class Main:
     """
-    Main function to start the program
+    Main class to start the program
     :param duration: int: duration in seconds to run the program
     """
-    reader = ScreenReader()
-    reader.take_screenshot_and_process(duration, 5)
-    reader.close_audio_stream()
+    def __init__(self, duration=300, sleep_time=5):
+        self.duration = duration
+        self.sleep_time = sleep_time
+
+    def main(self):
+        """
+        Main function to start the program
+        """
+        reader = ScreenReader()
+        reader.take_screenshot_and_process(self.duration, self.sleep_time)
+        reader.close_audio_stream()
 
 
 if __name__ == "__main__":
-    main(300)
+    Main(300).main()
