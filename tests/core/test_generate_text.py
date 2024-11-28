@@ -7,10 +7,11 @@ class TestGenerateText(unittest.TestCase):
         self.previous_texts = """Ojeda recieves a tidy pass", "Ojeda takes a shot on goal", "Ojeda scores a goal"""
 
     def test_generate_commentary(self):
-            result = self.commentary.generate_commentary(text=self.previous_texts)
+        result = self.commentary.generate_commentary(text=self.previous_texts)
 
-            self.assertIsInstance(result, str)
-            self.assertTrue(len(result) > 0)
+        self.assertIsInstance(result, str)
+        self.assertTrue(len(result) > 0)
+        print(f"Generated commentary: {result}")
 
 if __name__ == '__main__':
     unittest.main()
