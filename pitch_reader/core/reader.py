@@ -13,11 +13,11 @@ class ScreenReader:
     ScreenReader class to read the screen and generate commentary
 
     """
-    def __init__(self, api_key, screen_config=None, buffer_size=10):
+    def __init__(self, screen_config=None, buffer_size=10):
         self.screen_config = ScreenConfig()
         self.previous_texts = deque(maxlen=buffer_size) # Set the size of the context
-        self.commentary = Commentary(api_key)
-        self.audio_service = Audio(api_key)
+        self.commentary = Commentary()
+        self.audio_service = Audio()
         self.ocr = Ocr()
 
     def process_text(self, text):

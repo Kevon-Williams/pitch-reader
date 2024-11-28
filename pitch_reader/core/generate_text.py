@@ -1,10 +1,16 @@
 from openai import OpenAI
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.environ.get("OPENAI_API_KEY")
+
 
 class Commentary:
     """
     Commentary class to generate commentary
     """
-    def __init__(self, api_key):
+    def __init__(self):
         self.openai = OpenAI(api_key=api_key)
 
     def generate_commentary(self, previous_texts):

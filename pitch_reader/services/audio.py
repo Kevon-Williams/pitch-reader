@@ -1,12 +1,17 @@
 import pyaudio
 from openai import OpenAI
 from pitch_reader.core.config import AudioConfig
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.environ.get("OPENAI_API_KEY")
 
 class Audio:
     """
     Audio class to play audio from text
     """
-    def __init__(self, api_key):
+    def __init__(self):
         self.config = AudioConfig()
         self.openai = OpenAI(api_key=api_key)
         self.audio = pyaudio.PyAudio()
