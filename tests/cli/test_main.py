@@ -4,23 +4,21 @@ from pitch_reader.cli.main import Main
 
 class TestMain(unittest.TestCase):
     def setUp(self):
-        self.main = Main(5, 5)
-
+        self.duration = 5
+        self.main = Main(self.duration)
 
     def test_initialization(self):
-        self.assertEqual(self.main.duration, 5, "Duration should be 5")
-        self.assertEqual(self.main.sleep_time, 5, "sleep_time should be 5")
+        self.assertEqual(self.main.duration, self.duration)
 
     @patch('pitch_reader.cli.main.ScreenReader')
-    def test_main(self, mock_screen_reader):
-        mock_reader_instance = mock_screen_reader.return_value
-
-        main_instance = Main(duration=5, sleep_time=5)
-        main_instance.main()
+    def test_main_execution(self, mock_screen_reader):
+        mock_reader = mock_screen_reader.return_value
 
 
-        mock_reader_instance.take_screenshot_and_process.assert_called_once_with(5, 5)
-        mock_reader_instance.close_audio_stream.assert_called_once()
+        self.main.main()
+
+        mock_screen_reader.assert_called_once()
+        mock_reader.start.assert_called_once_with(self.duration)
 
 
 if __name__ == '__main__':

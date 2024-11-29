@@ -33,12 +33,11 @@ class ScreenReader:
 
     def capture_screen(self):
         """Thread 1: Continuously captures screenshots and adds to image queue"""
-        print("Capturing screen")
         with MSS() as sct:
             while self.running:
                 screenshot = sct.grab(self.screen_config.resolution())
                 self.image_queue.put(np.array(screenshot))  # puts image in queue
-                time.sleep(0.1)  # Prevent CPU overload
+                time.sleep(5)  # Prevent CPU overload
 
     def process_ocr(self):
         """Thread 2: Processes screenshots with OCR and adds unique text to text queue"""
@@ -69,12 +68,12 @@ class ScreenReader:
             try:
                 commentary = self.commentary_queue.get(timeout=1)
                 self.audio_service.start_audio_stream(commentary)
+                print(f"Playing: {commentary}")
             except QueueEmpty:
                 continue
 
     def start(self, duration):
         """Starts all threads"""
-        print("started")
         self.running = True
 
         self.threads = [
