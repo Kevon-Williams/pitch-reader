@@ -4,7 +4,7 @@ A real-time football commentary system that transforms on-screen text into natur
 
 ## Core Functionality
 - **Real-time Screen Capture**: Continuous monitoring of specified screen regions
-- **OCR Processing**: Accuarate and efficient text extraction using EasyOCR with GPU acceleration
+- **OCR Processing**: Accuarate and efficient text extraction using EasyOCR 
 - **AI Commentary Generation**: Dynamic, context-aware commentary using GPT-4
 - **Natural Speech**: Voice output using OpenAI's TTS API
 - **Context Management**: Buffer-based context management system retains relevant conversation history for coherent commentary
