@@ -59,6 +59,7 @@ class ScreenReader:
                 text = self.text_queue.get(timeout=1)
                 commentary = self.commentary.generate_commentary(text)
                 self.commentary_queue.put(commentary)
+                time.sleep(0.5)
             except QueueEmpty:
                 continue
 
