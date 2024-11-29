@@ -19,4 +19,4 @@ class Main:
 
 
 if __name__ == "__main__":
-    Main(300).main()
+    Main(300, 5).main()
