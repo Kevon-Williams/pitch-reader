@@ -1,9 +1,15 @@
-import google.generativeai as genai
+# from google import genai
+# from google.genai import types
+# import requests
+# import json
+from groq import Groq
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-api_key = os.environ.get("GOOGLE_API_KEY")
+api_key = os.environ.get("GROQ_API_KEY")
+
+
 
 
 class Commentary:
@@ -11,43 +17,94 @@ class Commentary:
     Commentary class to generate commentary
     """
     def __init__(self):
-        self.openai = genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel("gemini-1.5-flash")
+        # self.client = genai.Client()
+        api_key = os.environ.get("GROQ_API_KEY")
+        # self.base_url = "http://localhost:11434"
+        # self.model_name = "llama3"
+        self.model = "llama-3.1-8b-instant"
+        self.client = Groq(api_key=api_key)
 
     def generate_commentary(self, text):
         """
         Generates commentary based on previous text (context)
-        :param text:
-        :return :
+
         """
-        prompt = f""" DO NOT HALLUCINATE!! DO NOT HALLUCINATE!! You are Martin Tyler, a legendary football commentator known for your excitement and insight.
-                        Rules for your commentary:
-                        - Use natural speaking patterns and commentary phrases
-                        - Build excitement with tone variations (indicated by ! or ...)
-                        - React to the flow of play
-                        - Use football terminology naturally
-                        - Reference previous actions to build narrative
-                        - Include tactical insights when relevant
-                        - Keep commentary under 70 characters
+#         prompt = f""" You are Martin Tyler commenting on this sequence of football actions: {text}
+#
+# Rules:
+# - Maximum 12 words total
+# - Create ONE commentary that tells the story of the sequence
+# - No player names unless given
+# - No team names
+# - No stage directions or parentheses
+# - Don't spam adjectives and superlatives
+# - Focus on the flow and outcome
+#
+# Examples (DO NOT SAY "SEUQUENCE":
+# Sequence: "pass → cross → shot → save" → "Good buildup but keeper denies them!"
+# Sequence: "tackle → pass → shot → goal" → "Wins it back and finishes brilliantly!"
+# Sequence: "corner → header → block → clearance" → "Close from the corner but cleared away!"
+# Single: "shot on goal" → "What a strike!"
+#
+# Commentary:"""
 
-                        Examples of good commentary:
-                        "Brilliant run from Messi... finds Alvarez... WHAT A FINISH!"
-                        "Clever movement off the ball, they're stretching the defense"
-                        "Quick one-two... looking dangerous on the counter!"
+        # response = self.client.models.generate_content_stream(
+        #         model="gemini-2.5-flash",
+        #         contents=prompt,
+        #         config=types.GenerateContentConfig(
+        #             thinking_config=types.ThinkingConfig(thinking_budget=0)
+        #         )
 
-                        Bad examples (too robotic):
-                        "The player passes the ball"
-                        "A shot has been taken"
-                        "The team is attacking"
-
-                        Now comment on this action: {text} """
-
-        response = self.model.generate_content(
-                prompt,
-                generation_config=genai.types.GenerationConfig(
-                    max_output_tokens=20,
-                    temperature=1,
-                )
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{
+                "role": "system",
+                "content": "You are a football commentator. Give exactly 4 words of exciting commentary. No punctuation. No extra words."
+            }, {
+                "role": "user",
+                "content": f"Action: {text}"
+            }],
+            max_tokens=8,
+            temperature=0.2,  # Low for consistency
+            top_p=0.3,  # Focused responses
+            stop=["\n", ".", "!"]  # Stop at punctuation
         )
 
-        return response.text
+        commentary = response.choices[0].message.content.strip()
+
+        # response = requests.post(
+        #     f"{self.base_url}/api/generate",
+        #     json={
+        #         "model": self.model_name,
+        #         "prompt": prompt,
+        #         "stream": True,
+        #         "options": {
+        #             "temperature": 0.0,
+        #             "top_p": 0.1,
+        #             "num_predict": 30,
+        #             "repeat_penalty": 1.0,
+        #         }
+        #      },
+        #     timeout = 30,
+        #     stream=True
+        # )
+        #
+        # if response.status_code == 200:
+        #     full_response = ""
+        #
+        #     # steaming response
+        #     for line in response.iter_lines():
+        #         if line:
+        #             try:
+        #                 chunk = json.loads(line)
+        #                 token = chunk.get("response", "")
+        #                 full_response += token
+        #
+        #                 # Stop when done
+        #                 if chunk.get("done", False):
+        #                     break
+        #             except json.JSONDecodeError:
+        #                 continue
+        #     response = full_response.strip()
+
+        return commentary

@@ -9,9 +9,7 @@ class Main:
         self.duration = duration
 
     def main(self):
-        """
-        Main function to start the program
-        """
+
         reader = ScreenReader()
         reader.start(self.duration)
 

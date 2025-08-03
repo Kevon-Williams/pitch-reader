@@ -23,6 +23,9 @@ class ScreenReader:
         self.audio_service = Audio()
         self.ocr = Ocr()
 
+        self.text_batch = []
+        self.batch_size = 2 # Number of texts to batch before generating commentary
+
         self.image_queue = StdQueue(maxsize=5)
         self.text_queue = StdQueue(maxsize=5)
         self.commentary_queue = StdQueue(maxsize=5)
@@ -37,7 +40,7 @@ class ScreenReader:
             while self.running:
                 screenshot = sct.grab(self.screen_config.resolution())
                 self.image_queue.put(np.array(screenshot))  # puts image in queue
-                time.sleep(5)  # Prevent CPU overload
+                time.sleep(5)  # seconds between screenshots
 
     def process_ocr(self):
         """Thread 2: Processes screenshots with OCR and adds unique text to text queue"""
@@ -59,7 +62,7 @@ class ScreenReader:
                 text = self.text_queue.get(timeout=1)
                 commentary = self.commentary.generate_commentary(text)
                 self.commentary_queue.put(commentary)
-                time.sleep(0.5)
+
             except QueueEmpty:
                 continue
 
