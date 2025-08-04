@@ -1,8 +1,5 @@
-import pyaudio
-from openai import OpenAI
 from elevenlabs.client import ElevenLabs
 from elevenlabs import stream
-from pitch_reader.core.config import AudioConfig
 from dotenv import load_dotenv
 import os
 
