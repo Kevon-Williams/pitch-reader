@@ -21,7 +21,7 @@ class Commentary:
         api_key = os.environ.get("GROQ_API_KEY")
         # self.base_url = "http://localhost:11434"
         # self.model_name = "llama3"
-        self.model = "llama-3.1-8b-instant"
+        self.model = "gemma2-9b-it"
         self.client = Groq(api_key=api_key)
 
     def generate_commentary(self, text):
@@ -59,15 +59,17 @@ class Commentary:
             model=self.model,
             messages=[{
                 "role": "system",
-                "content": "You are a football commentator. Give exactly 4 words of exciting commentary. No punctuation. No extra words."
+                "content": "You are a soccer commentator. Give 8 words of exciting commentary. No punctuation. No extra words. Do not hallucinate"
             }, {
                 "role": "user",
                 "content": f"Action: {text}"
             }],
-            max_tokens=8,
-            temperature=0.2,  # Low for consistency
-            top_p=0.3,  # Focused responses
-            stop=["\n", ".", "!"]  # Stop at punctuation
+            max_tokens=16,
+            temperature=0.1,  # Low for consistency
+            top_p=0.3,
+            frequency_penalty=1.0,
+            presence_penalty=1.0,
+            stop=["\n", ".", "!"]
         )
 
         commentary = response.choices[0].message.content.strip()

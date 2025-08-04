@@ -1,5 +1,6 @@
 from pitch_reader.core.reader import ScreenReader
 
+
 class Main:
     """
     Main class to start the program

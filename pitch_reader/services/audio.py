@@ -15,29 +15,42 @@ class Audio:
         self.config = AudioConfig()
         self.openai = OpenAI(api_key=api_key)
         self.audio = pyaudio.PyAudio()
-        self.stream = None
 
-    def start_audio_stream(self, text):
-        """
-        Starts the audio stream (plays the audio)
-        :param text:
-        :return:
-        """
         self.stream = self.audio.open(
             format=self.config.format,
             channels=self.config.channels,
             rate=self.config.rate,
-            output=True
+            output=True,
+            frames_per_buffer=1024,
+            start=True,
         )
 
+
+
+    def start_audio_stream(self, text):
+        """
+        starts the audio stream
+        :param text:
+        :return:
+        """
+        # self.stream = self.audio.open(
+        #     format=self.config.format,
+        #     channels=self.config.channels,
+        #     rate=self.config.rate,
+        #     output=True
+        # )
+
         with self.openai.audio.speech.with_streaming_response.create(
-                model="tts-1",
+                model="gpt-4o-mini-tts",
                 voice="alloy",
                 input=text,
+                instructions="You are a commentator. Repeat the input verbatim.",
                 response_format="pcm"
         ) as response:
-            for chunk in response.iter_bytes(1024):
+            for chunk in response.iter_bytes(256):
                 self.stream.write(chunk)
+
+
 
 
 
