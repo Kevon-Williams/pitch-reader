@@ -66,11 +66,10 @@ class ScreenReader:
             print(f"Text: {self.most_recent_text}")
             commentary = self.commentary.generate_commentary(self.most_recent_text)
 
-            if commentary and commentary.strip():
-                if commentary not in self.previous_commentaries:
-                    self.most_recent_commentary = commentary
-                    print(f"Commentary: {self.most_recent_commentary}")
-                    self.previous_commentaries.append(commentary)
+            if commentary not in self.previous_commentaries:
+                self.most_recent_commentary = commentary
+                print(f"Commentary: {self.most_recent_commentary}")
+                self.previous_commentaries.append(commentary)
 
 
 
