@@ -6,21 +6,25 @@ from mss.windows import MSS
 from pitch_reader.services.audio import Audio
 from pitch_reader.services.ocr import Ocr
 from pitch_reader.core.config import ScreenConfig
+from pitch_reader.core.generate_text import Commentary
 
 
 class ScreenReader:
     """
     ScreenReader class to read the screen and generate commentary
     """
-    def __init__(self, buffer_size=10):
+    def __init__(self, buffer_size=1):
         self.screen_config = ScreenConfig()
-        self.previous_texts = deque(maxlen=buffer_size)  # Set the size of the context
-        #self.commentary = Commentary()
+        self.previous_texts = deque(maxlen=buffer_size)
+        self.previous_commentaries = deque(maxlen=buffer_size)
+        self.commentary = Commentary()
         self.audio_service = Audio()
         self.ocr = Ocr()
 
         self.most_recent_image = None
         self.most_recent_text= None
+        self.most_recent_commentary = None
+        # self.previous_commentary = None
 
         self.running = False
 
@@ -43,6 +47,9 @@ class ScreenReader:
         :param:
         :return:
         """
+
+        self.most_recent_text = None
+
         if self.most_recent_image is not None:
             text = self.ocr.process_image(self.most_recent_image)
 
@@ -50,6 +57,21 @@ class ScreenReader:
                 self.most_recent_text = text
                 self.previous_texts.append(text)
         self.most_recent_image = None
+
+    def generate_commentary_c(self):
+
+        self.most_recent_commentary = None
+
+        if self.most_recent_text is not None:
+            print(f"Text: {self.most_recent_text}")
+            commentary = self.commentary.generate_commentary(self.most_recent_text)
+
+            if commentary and commentary.strip():
+                if commentary not in self.previous_commentaries:
+                    self.most_recent_commentary = commentary
+                    print(f"Commentary: {self.most_recent_commentary}")
+                    self.previous_commentaries.append(commentary)
+
 
 
 
@@ -59,11 +81,12 @@ class ScreenReader:
         :param:
         :return:
         """
-        if self.most_recent_text is not None:
-            self.audio_service.start_audio_stream(self.most_recent_text)
-            print(f"Playing: {self.most_recent_text}")
+        if self.most_recent_commentary is not None:
+            self.audio_service.start_audio_stream(self.most_recent_commentary)
+            # self.previous_commentary = self.most_recent_commentary
+            self.most_recent_commentary = None
 
-        self.most_recent_text = None
+
 
 
     def start(self, duration):
@@ -77,7 +100,7 @@ class ScreenReader:
         while self.running and (time.time() - start_time) < duration:
             self.capture_screen()
             self.process_ocr()
-            # self.generate_commentary()
+            self.generate_commentary_c()
             self.play_audio()
 
             time.sleep(1) # seconds between cycles

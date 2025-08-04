@@ -1,11 +1,17 @@
 import pyaudio
 from openai import OpenAI
+from elevenlabs.client import ElevenLabs
+from elevenlabs import stream
 from pitch_reader.core.config import AudioConfig
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 api_key = os.environ.get("OPENAI_API_KEY")
+
+elevenlabs = ElevenLabs (
+    api_key = os.environ.get("ELEVENLABS_API_KEY"),
+)
 
 class Audio:
     """
@@ -34,16 +40,25 @@ class Audio:
         :return:
         """
 
-        with self.openai.audio.speech.with_streaming_response.create(
-                model="gpt-4o-mini-tts",
-                voice="fable",
-                input=text,
-                instructions="""You are a commentator. Repeat the input verbatim. Add function words (articles auxiliary verbs, 
-                             prepositions, conjunctions) when needed. Do not add any extra words or phrases.""",
-                response_format="pcm"
-        ) as response:
-            for chunk in response.iter_bytes(1024):
-                self.stream.write(chunk)
+        # with self.openai.audio.speech.with_streaming_response.create(
+        #         model="gpt-4o-mini-tts",
+        #         voice="fable",
+        #         input=text,
+        #         instructions="""You are a commentator. Repeat the input verbatim. Add function words (articles auxiliary verbs,
+        #                      prepositions, conjunctions) when needed. Do not add any extra words or phrases.""",
+        #         response_format="pcm"
+        # ) as response:
+        #     for chunk in response.iter_bytes(1024):
+        #         self.stream.write(chunk)
+
+        audio = elevenlabs.text_to_speech.convert(
+            text=text,
+            voice_id="bVM5MBBFUy5Uve0cooHn",
+            model_id="eleven_flash_v2_5",
+            output_format="mp3_44100_128"
+        )
+
+        stream(audio)
 
 
 
