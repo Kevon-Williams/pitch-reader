@@ -84,5 +84,5 @@ class ScreenReader:
 
 
     def stop(self):
-        """Stops threads and cleanup"""
+        """stop function"""
         self.running = False

@@ -5,7 +5,7 @@ class Ocr:
     Ocr class to process image and extract text
     """
     def __init__(self):
-        self.reader = easyocr.Reader(['en'], gpu=True)
+        self.reader = easyocr.Reader(['en'], gpu=False)
 
     def process_image(self, image):
         """

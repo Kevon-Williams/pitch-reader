@@ -21,7 +21,7 @@ class Audio:
             channels=self.config.channels,
             rate=self.config.rate,
             output=True,
-            frames_per_buffer=1024,
+            frames_per_buffer=4096,
             start=True,
         )
 
@@ -33,21 +33,16 @@ class Audio:
         :param text:
         :return:
         """
-        # self.stream = self.audio.open(
-        #     format=self.config.format,
-        #     channels=self.config.channels,
-        #     rate=self.config.rate,
-        #     output=True
-        # )
 
         with self.openai.audio.speech.with_streaming_response.create(
                 model="gpt-4o-mini-tts",
-                voice="alloy",
+                voice="fable",
                 input=text,
-                instructions="You are a commentator. Repeat the input verbatim.",
+                instructions="""You are a commentator. Repeat the input verbatim. Add function words (articles auxiliary verbs, 
+                             prepositions, conjunctions) when needed. Do not add any extra words or phrases.""",
                 response_format="pcm"
         ) as response:
-            for chunk in response.iter_bytes(256):
+            for chunk in response.iter_bytes(1024):
                 self.stream.write(chunk)
 
 

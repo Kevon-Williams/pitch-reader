@@ -12,7 +12,8 @@ class ScreenConfig:
 
     def resolution(self):
         """
-        Returns the resolution of the screen
+        returns the resolution for screenshot
+        :param:
         :return:
         """
         return {
