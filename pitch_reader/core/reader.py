@@ -59,7 +59,11 @@ class ScreenReader:
         self.most_recent_image = None
 
     def generate_commentary_c(self):
-
+        """
+        generates commentary from the most recent text
+        :param:
+        :return:
+        """
         self.most_recent_commentary = None
 
         if self.most_recent_text is not None:

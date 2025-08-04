@@ -32,24 +32,12 @@ class Audio:
         )
 
 
-
     def start_audio_stream(self, text):
         """
         starts the audio stream
         :param text:
         :return:
         """
-
-        # with self.openai.audio.speech.with_streaming_response.create(
-        #         model="gpt-4o-mini-tts",
-        #         voice="fable",
-        #         input=text,
-        #         instructions="""You are a commentator. Repeat the input verbatim. Add function words (articles auxiliary verbs,
-        #                      prepositions, conjunctions) when needed. Do not add any extra words or phrases.""",
-        #         response_format="pcm"
-        # ) as response:
-        #     for chunk in response.iter_bytes(1024):
-        #         self.stream.write(chunk)
 
         audio = elevenlabs.text_to_speech.convert(
             text=text,
@@ -59,9 +47,6 @@ class Audio:
         )
 
         stream(audio)
-
-
-
 
 
     def stop_audio(self):
