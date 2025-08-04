@@ -6,7 +6,7 @@ from mss.windows import MSS
 from pitch_reader.services.audio import Audio
 from pitch_reader.services.ocr import Ocr
 from pitch_reader.core.config import ScreenConfig
-from pitch_reader.core.generate_text import Commentary
+
 
 class ScreenReader:
     """
@@ -15,13 +15,12 @@ class ScreenReader:
     def __init__(self, buffer_size=10):
         self.screen_config = ScreenConfig()
         self.previous_texts = deque(maxlen=buffer_size)  # Set the size of the context
-        self.commentary = Commentary()
+        #self.commentary = Commentary()
         self.audio_service = Audio()
         self.ocr = Ocr()
 
         self.most_recent_image = None
         self.most_recent_text= None
-        self.most_recent_commentary= None
 
         self.running = False
 
@@ -52,21 +51,6 @@ class ScreenReader:
                 self.previous_texts.append(text)
         self.most_recent_image = None
 
-    def generate_commentary(self):
-        """
-        passes the latest text to the commentary generator method
-        :param:
-        :return:
-        """
-        if self.most_recent_text is not None:
-
-            commentary = self.commentary.generate_commentary(self.most_recent_text)
-
-            self.most_recent_commentary = commentary
-
-            self.most_recent_text = None
-
-
 
 
     def play_audio(self):
@@ -75,11 +59,11 @@ class ScreenReader:
         :param:
         :return:
         """
-        if self.most_recent_commentary is not None:
-            self.audio_service.start_audio_stream(self.most_recent_commentary)
-            print(f"Playing: {self.most_recent_commentary}")
+        if self.most_recent_text is not None:
+            self.audio_service.start_audio_stream(self.most_recent_text)
+            print(f"Playing: {self.most_recent_text}")
 
-        self.most_recent_commentary = None
+        self.most_recent_text = None
 
 
     def start(self, duration):
@@ -93,7 +77,7 @@ class ScreenReader:
         while self.running and (time.time() - start_time) < duration:
             self.capture_screen()
             self.process_ocr()
-            self.generate_commentary()
+            # self.generate_commentary()
             self.play_audio()
 
             time.sleep(1) # seconds between cycles
