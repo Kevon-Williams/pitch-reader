@@ -1,3 +1,5 @@
+import pyaudio
+
 class ScreenConfig:
     """
     ScreenConfig class to set the resolution of the screen
@@ -25,6 +27,6 @@ class AudioConfig:
     AudioConfig class to set the audio configuration
     """
     def __init__(self):
-        self.format = 8
+        self.format = pyaudio.paInt16
         self.channels = 1
         self.rate = 24_000
