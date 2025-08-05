@@ -1,5 +1,7 @@
 import time
 from collections import deque
+
+import cv2
 import numpy as np
 from mss.windows import MSS
 
@@ -52,6 +54,7 @@ class ScreenReader:
 
         if self.most_recent_image is not None:
             text = self.ocr.process_image(self.most_recent_image)
+            # cv2.imwrite("latest_image.png", self.most_recent_image)
 
             if text and text not in self.previous_texts:  # check if text is unique
                 self.most_recent_text = text

@@ -28,7 +28,7 @@ class Commentary:
             messages=[{
                 "role": "system",
                 "content": """You are a soccer commentator. Comment based on the input. Add function words (articles auxiliary verbs,
-        #                      prepositions, conjunctions) when needed."""
+        #                      prepositions, conjunctions) when needed. Generate concise and varied commentary in past tense."""
             }, {
                 "role": "user",
                 "content": f"Action: {text}"
